@@ -34,7 +34,80 @@ namespace SistemaCadastro
                 return false;
             }
 
-        }
+        }//fim do insereBanda
 
-    }
+        public DataTable listaGenero()
+        {
+            // comentario
+            MySqlCommand cmd = new MySqlCommand("sp_listaGenero", conexao);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                conexao.Open();
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                DataTable tabela = new DataTable();
+                da.Fill(tabela);
+                return tabela;
+            }// fim try
+            catch (MySqlException e)
+            {
+                mensagem = "Erro:" + e.Message;
+                return null;
+            }
+            finally
+            {
+                conexao.Close();
+            }
+
+        }// fim lista_genero
+
+        public DataTable listaBandas()
+        {
+            MySqlCommand cmd = new MySqlCommand("sp_listaBandas", conexao);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                conexao.Open();
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                DataTable tabela = new DataTable();
+                da.Fill(tabela);
+                return tabela;
+            }// fim try
+            catch (MySqlException e)
+            {
+                mensagem = "Erro:" + e.Message;
+                return null;
+            }
+            finally
+            {
+                conexao.Close();
+            }
+
+        }// fim lista_banda
+
+        //----- Filtro  na aplicação (textbox)
+        public bool deletaBanda(int idRemovebanda)
+        {
+            MySqlCommand cmd = new MySqlCommand("sp_removeBanda", conexao);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("idbanda", idRemovebanda);
+            try
+            {
+                conexao.Open();
+                cmd.ExecuteNonQuery(); // executa o comando
+                return true;
+            }
+            catch (MySqlException e)
+            {
+                mensagem = "Erro:" + e.Message;
+                return false;
+            }
+            finally
+            {
+                conexao.Close();
+            }
+        }// fim deletaBanda 
+
+
+    }//fim classe
 }
